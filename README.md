@@ -5,10 +5,6 @@
 É uma aplicação desenvolvida em java para realizar a conversão entre diversos pares de moedas. Foram aplicados os principios de POO. e tratamento de exceções.
 A taxa de conversão entre o par de moedas é obtido de forma dinamica a partir da API ExchangeRate.
 
-## Execução
-
-Para executar a aplicação é necessario obter uma chave no site da API, link disponivel em recursos. Após obtenção da chave, altere o valor da variavel "apiKey" na classe ConversorMoeda.
-
 ## Ambiente de Desenvolvimento
 
 - IDE: IntelliJ Community Edition
