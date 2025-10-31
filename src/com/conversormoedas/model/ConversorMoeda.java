@@ -4,6 +4,7 @@ import com.conversormoedas.exception.ExceptionValorInvalido;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.net.URI;
@@ -13,17 +14,19 @@ import java.net.http.HttpResponse;
 
 public class ConversorMoeda {
     //Declaração de variaveis. Aplicado encapsulamento.
-    @SerializedName("base_code")
+    @Expose
     private final String moedaOrigem;
-    @SerializedName("target_code")
+    @Expose
     private final String moedaDestino;
-    @SerializedName("conversion_rate")
+    @Expose
     private final double taxaConversao;
+    @Expose
     private double valor;
+    @Expose
     private double valorConvertido;
 
     //CHAVE DA API EXCHANGERATE
-    String apiKey = "";
+    private final String apiKey = "39767928cdd99d42b581a993";
     //---------------------------------------
 
     public ConversorMoeda(String moedaOrigem, String moedaDestino) {
@@ -82,9 +85,23 @@ public class ConversorMoeda {
             //gerando um objeto json (p/ acesso chave-valor)a partir do elemento json
             JsonObject objetoJson = elementoJson.getAsJsonObject();
             //obtendo e retornando o valor da taxa de conversão do par de moedas selecionado
-            return objetoJson.get("conversion_rate").getAsDouble();
+            // Verificação se a chave "conversion_rate" existe
+            if (objetoJson.has("conversion_rate")) {
+                return objetoJson.get("conversion_rate").getAsDouble();
+            } else {
+                throw new RuntimeException("Taxa de conversão não encontrada na resposta da API.");
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao obter taxa de conversão: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(Moeda de origem: '" + moedaOrigem + '\'' +
+                ", Moeda de destino: " + moedaDestino + "," +
+                ", Taxa: " + taxaConversao + "," +
+                ", Valor: " + valor + "," +
+                " convertido: " + valorConvertido + ")";
     }
 }
